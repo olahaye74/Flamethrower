@@ -15,7 +15,7 @@ set_ver::
 
 install_configs::
 \tinstall -d \$(CONFDIR)/etc/init.d
-\tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc
+\tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower
 \tinstall -m 755 etc/init.d/flamethrower-server \$(CONFDIR)/etc/init.d
 
 source_tarball :: tmp/flamethrower-$version.tar.bz2
@@ -28,7 +28,7 @@ tmp/flamethrower-$version.tar.bz2::
 \trm -rf \`find tmp/flamethrower-$version -name CVS -type d -printf \"\%p \"\`
 \tcd tmp && tar -c flamethrower-$version | bzip2 > flamethrower-$version.tar.bz2
 
-all :: set_ver install_configs
+install :: set_ver install_configs
 
 EOF
 }

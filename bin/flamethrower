@@ -4,7 +4,7 @@
 #
 #   Copyright (C) 2003 Brian Elliott Finley <finley@mcs.anl.gov>
 #
-#   $Id: flamethrower,v 1.4 2003/08/19 22:38:05 brianfinley Exp $
+#   $Id: flamethrower,v 1.6 2003/11/18 00:29:22 brianfinley Exp $
 #
 
 use strict;
@@ -52,7 +52,11 @@ Options: (options can be presented in any order)
     Be verbose.
 
  --config-file FILE
-    Alternate config file location.  Defaults to: $conf_file.
+    Alternate config file location.  Defaults to:
+    $conf_file
+
+    Note: SystemImager users try using:
+    /etc/systemimager/flamethrower.conf
 
  --list
     List available modules on the Flamethrower server.
@@ -268,25 +272,33 @@ sub flamethrower_client {
     #
     my $tar_opts;
     if(`tar --help 2>&1 | grep overwrite`) {
-        #XXX $tar_opts = '--overwrite -xp';
-        $tar_opts = '--overwrite -xzp';
+        $tar_opts = '--overwrite -xp';
     } else {
-        #XXX $tar_opts = '-x';
-        $tar_opts = '-xz';
+        $tar_opts = '-x';
     }
 
     ############################################################################
     #
     # initiate transfer
     #
-    my $cmd;
+    my $udp_cmd;
+    my $tar_cmd;
+
     if($verbose) {
-        $cmd = "udp-receiver $udp_receiver_options | tar $tar_opts -C $dir";
+        $udp_cmd = "udp-receiver $udp_receiver_options --file /tmp/multicast.tar.$$";
+        $tar_cmd = "tar $tar_opts -C $dir -f /tmp/multicast.tar.$$";
     } else {
-        $cmd = "udp-receiver $udp_receiver_options 2>/dev/null | tar $tar_opts -C $dir 2>/dev/null";
+        $udp_cmd = "udp-receiver $udp_receiver_options --file /tmp/multicast.tar.$$ 2>/dev/null";
+        $tar_cmd = "tar $tar_opts -C $dir -f /tmp/multicast.tar.$$";
     }
-    print "$cmd\n" if($verbose);
-    !system($cmd) or die("Failed");
+
+    print "$udp_cmd\n" if($verbose);
+    !system($udp_cmd) or die("FAILED: $tar_cmd");
+
+    print "$tar_cmd\n" if($verbose);
+    !system($tar_cmd) or die("FAILED: $tar_cmd");
+
+    unlink("/tmp/multicast.tar.$$");
 }
 
 
