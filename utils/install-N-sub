@@ -2,7 +2,7 @@
 #
 # Substitutes one string for another in a set of files
 #
-#   $Id: install-N-sub,v 1.3 2003/06/30 02:58:37 dannf Exp $
+#   $Id: install-N-sub,v 1.4 2003/08/20 15:36:48 brianfinley Exp $
 #
 # ================================================================
 #
@@ -199,27 +199,20 @@ sub run_through_files {
         close OLDFILE;
         
         # Check for matches
-	my $string;
-	my $oldstring;
         foreach (@lines) {
-	    $oldstring = $string;
-	    foreach $string (keys %subs) {
+            foreach my $string (keys %subs) {
                 if(s/$string/$subs{$string}/g) {
                     $write_it = 1;
                 }
             }
-	    if ($oldstring ne $string) {
-		print "SOMETHINS DIFFERENT\n";
-	    }
         }
         
         # Write it if we need to.
         if($write_it) {
             open NEWFILE, ">$file" || die "$program: Cannot open $file";
-	    foreach (@lines) {
-		$error = !(print NEWFILE);
-		print NEWFILE;
-	    }
+                foreach (@lines) {
+                    $error = !(print NEWFILE);
+                }
             close NEWFILE;
             if($error) {
                 print "Error writing $file\n";
