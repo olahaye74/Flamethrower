@@ -3,20 +3,35 @@
 #
 #   Copyright (C) 2003 Brian Elliott Finley <finley@mcs.anl.gov>
 #
-#   (if you are not listed here, but should be, please send me email -Brian)
+#   This is at least a partial credits-file of people that have contributed
+#   to the Flamethrower project.  It is sorted by name and formatted to allow
+#   easy grepping and beautification by scripts.  The fields are: name (N), 
+#   email (E), web-address (W), PGP key ID and fingerprint (P), description (D),
+#   and snail-mail address (S).
 #
-#   * Indicates that this person made a contribution to the current release.
+#   If you are not listed here, but should be, please send me an entry for
+#   yourself. -Brian
 #
 
-Uber contributors (alphabetical order):
-*- Frazier, Dann <dannf@fc.hp.com>
-*- Skouson, Gary B. <gary.skouson@pnl.gov>
+N: Carlos Arevalo
+E: carlos.arevalo@hp.com
+D: Testing
 
-Other people who have contributed code or documentation that has been 
-incorporated (alphabetical order):
-- Your Name Here!
+N: Brian Elliott Finley
+E: brian@bgsw.net
+W: http://thefinleys.com/
+P: 1024D/10F8EE52 3FF8 D096 0E0C D3F3 29B7  6518 D20B 1931 10F8 EE52
+D: Creator, Primary Author, and Project Lead
+S: 1718 Ironwood Drive
+S: Naperville, IL 60565
+S: USA
 
-Other people who have contributed ideas, suggestions, found bugs, or 
-reported success with distributions (alphabetical order):
-- Your Name Here!
+N: Dann Frazier
+E: dannf@fc.hp.com
+D: Initial design
+
+N: Gary B. Skouson
+E: gary.skouson@pnl.gov
+D: Initial design
+D: udpcast code
 

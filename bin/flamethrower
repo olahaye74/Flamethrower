@@ -4,7 +4,7 @@
 #
 #   Copyright (C) 2003 Brian Elliott Finley <finley@mcs.anl.gov>
 #
-#   $Id: flamethrower,v 1.3 2003/06/30 04:36:43 dannf Exp $
+#   $Id: flamethrower,v 1.4 2003/08/19 22:38:05 brianfinley Exp $
 #
 
 use strict;
@@ -268,9 +268,11 @@ sub flamethrower_client {
     #
     my $tar_opts;
     if(`tar --help 2>&1 | grep overwrite`) {
-        $tar_opts = '--overwrite -xp';
+        #XXX $tar_opts = '--overwrite -xp';
+        $tar_opts = '--overwrite -xzp';
     } else {
-        $tar_opts = '-x';
+        #XXX $tar_opts = '-x';
+        $tar_opts = '-xz';
     }
 
     ############################################################################

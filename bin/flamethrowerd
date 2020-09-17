@@ -5,7 +5,7 @@
 #   Copyright (C) 2003 Bald Guy Software 
 #                      Brian Elliott Finley <brian@bgsw.net>
 #
-#   $Id: flamethrowerd,v 1.2 2003/06/30 04:36:43 dannf Exp $
+#   $Id: flamethrowerd,v 1.3 2003/08/19 22:38:05 brianfinley Exp $
 #
 
 $0 = "flamethrowerd";
@@ -303,7 +303,8 @@ sub build_udp_sender_cmd {
     ############################################################################
 
     # Build command
-    my $cmd = qq(udp-sender --pipe 'tar -cpf - -C $dir .');
+    #XXX my $cmd = qq(udp-sender --pipe 'tar -cpf - -C $dir .');
+    my $cmd = qq(udp-sender --pipe 'tar -czpf - -C $dir .');
     $cmd .= $portbase               if(defined $portbase);
     $cmd .= $min_clients            if(defined $min_clients);
     $cmd .= $max_wait               if(defined $max_wait);
