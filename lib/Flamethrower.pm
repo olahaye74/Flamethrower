@@ -4,7 +4,7 @@
 #   Copyright (C) 2002 Bald Guy Software 
 #                      Brian Elliott Finley <brian@bgsw.net>
 #
-#   $Id: Flamethrower.pm,v 1.2 2003/06/29 01:04:22 brianfinley Exp $
+#   $Id: Flamethrower.pm 24 2003-06-29 01:04:22Z brianfinley $
 #
 
 package Flamethrower;
