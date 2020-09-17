@@ -1,5 +1,5 @@
 %define name            flamethrower
-%define version         0.1.7
+%define version         0.1.8
 %define release         1
 %define prefix          /usr
 
@@ -43,6 +43,7 @@ find                            $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | x
 %doc HOWTO README COPYING CREDITS
 %config /etc/flamethrower/flamethrower.conf
 %config /etc/init.d/flamethrower-server
+%dir /var/lib/flamethrower
 %dir /var/state/flamethrower
 
 %post
@@ -50,6 +51,8 @@ find                            $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | x
 %preun
 
 %changelog
+* Mon Jan 16 2006 Bernard Li <bli@bcgsc.ca>
+- Added %dir /var/lib/flamethrower
 * Sat Dec 24 2005 Bernard Li <bli@bcgsc.ca>
 - Added PERLPREFIX such that building RPM on systems with newer perl (5.8.5?) works
 - PREFIX is needed for backward compatability
