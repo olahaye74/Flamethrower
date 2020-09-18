@@ -1,3 +1,14 @@
+flamethrower (0.1.8-3) unstable; urgency=low
+
+  * Fix runlevels in LSB section of initscript and add dependency
+    on syslog (Closes: #542283). Thanks to Petter Reinholdtsen for
+    his work here.
+  * Fix build failure caused by change in MakeMaker
+  * Update Standards-Version to 3.8.3
+  * Use debhelper 5 & add ${misc:Depends}
+
+ -- dann frazier <dannf@debian.org>  Wed, 19 Aug 2009 16:01:03 -0600
+
 flamethrower (0.1.8-2) unstable; urgency=low
 
   * Fix /tmp symlink attack vector. Closes: #506350 (CVE-2008-5141)

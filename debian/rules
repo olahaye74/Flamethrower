@@ -30,14 +30,14 @@ install: build
 	dh_testdir
 	-dh_testroot
 	dh_installdirs
-	$(MAKE) install PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)"
+	$(MAKE) install PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)" INSTALLSITEARCH="$(PREFIX)"
 
 	# upstream installs this as executable
 	chmod 644 $(tmp)/usr/lib/flamethrower/*.pm
 
 	# this directory tree is empty
-	rm -rf $(tmp)/usr/lib/perl
-	rm -rf $(tmp)/usr/lib/flamethrower/auto
+	rm -rf $(tmp)/usr/perllocal.pod
+	rm -rf $(tmp)/usr/auto
 
 	# let debhelper install this for us
 	rm -rf $(tmp)/etc/init.d

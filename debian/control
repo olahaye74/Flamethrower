@@ -2,12 +2,12 @@ Source: flamethrower
 Section: admin
 Priority: optional
 Maintainer: dann frazier <dannf@debian.org>
-Build-Depends: debhelper (>> 3.0.0)
-Standards-Version: 3.8.0
+Build-Depends: debhelper (>> 5)
+Standards-Version: 3.8.3
 
 Package: flamethrower
 Architecture: all
-Depends: ${perl:Depends}, udpcast, libappconfig-perl
+Depends: ${perl:Depends}, ${misc:Depends}, udpcast, libappconfig-perl
 Description: Multicast file distribution utility
  Flamethrower is intended to be an easy to use multicast file distribution
  system.  It was created to add multicast install capabilities to
