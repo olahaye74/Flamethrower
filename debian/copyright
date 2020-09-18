@@ -1,12 +1,58 @@
-This package was debianized by dann frazier <dannf@hp.com> on
-Tue, 18 Nov 2003 21:55:23 -0700.
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: flamethrower
+Upstream-Contact: Brian Elliott Finley <brian@thefinleys.com>
+Source: http://sourceforge.net/projects/systemimager/files/flamethrower/
 
-It was downloaded from http://sf.net/projects/systemimager
+Files: *
+Copyright: 2003 Brian Elliott Finley <finley@mcs.anl.gov>
+License: GPL-2+
 
-Upstream Maintainer: Brian Finley <brian@bgsw.net>
+Files: bin/flamethrowerd
+Copyright: 2003 Bald Guy Software
+           Brian Elliott Finley <brian@bgsw.net>
+License: GPL-2+
 
-Flamethrower is available under the terms of the GNU General Public License,
-Version 2.
+Files: etc/flamethrower.conf
+Copyright: 2003 Bald Guy Software <brian@bgsw.net>
+License: GPL-2+
 
-On Debian GNU/Linux Systems, the full text of the GPL can be found in:
-  /usr/share/common-licenses/GPL-2
+Files: etc/init.d/flamethrower-server
+Copyright: 2003 Bald Guy Software
+           Brian Elliott Finley <bef@bgsw.net>
+License: GPL-2+
+
+Files: lib/Flamethrower.pm
+Copyright: 2002 Bald Guy Software 
+           Brian Elliott Finley <brian@bgsw.net>
+License: GPL-2+
+
+Files: utils/install-N-sub
+Copyright: 2003 Brian Elliott Finley <finley@mcs.anl.gov>
+           Alan Bailey <bailey@mcs.anl.gov>
+License: GPL-2+
+
+Files: debian/*
+Copyright: 2003 dann frazier <dannf@dannf.org>
+License: GPL-2
+
+License: GPL-2+
+ This program is free software; you can redistribute it
+ and/or modify it under the terms of the GNU General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later
+ version.
+ .
+ This program is distributed in the hope that it will be
+ useful, but WITHOUT ANY WARRANTY; without even the implied
+ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ PURPOSE.  See the GNU General Public License for more
+ details.
+ .
+ You should have received a copy of the GNU General Public
+ License along with this package; if not, write to the Free
+ Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+ Boston, MA  02110-1301 USA
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 2 can be found in the file
+ `/usr/share/common-licenses/GPL-2'.

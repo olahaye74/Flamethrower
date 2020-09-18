@@ -3,7 +3,7 @@ Section: admin
 Priority: optional
 Maintainer: dann frazier <dannf@debian.org>
 Build-Depends: debhelper (>> 5)
-Standards-Version: 3.8.3
+Standards-Version: 3.9.6
 
 Package: flamethrower
 Architecture: all

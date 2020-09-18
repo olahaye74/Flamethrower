@@ -9,9 +9,9 @@ sub MY::postamble {
     my $string = <<EOF;
 
 set_ver::
-\t${install} \$(DESTDIR)/\$(PREFIX)/bin/flamethrower
-\t${install} \$(DESTDIR)/\$(PREFIX)/bin/flamethrowerd
-\t${install} \$(DESTDIR)/\$(PREFIX)/lib/flamethrower/Flamethrower.pm
+\t${install} \$(PREFIX)/bin/flamethrower
+\t${install} \$(PREFIX)/bin/flamethrowerd
+\t${install} \$(PREFIX)/lib/flamethrower/Flamethrower.pm
 
 install_configs::
 \tinstall -d \$(CONFDIR)/etc/init.d/
