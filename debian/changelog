@@ -1,3 +1,10 @@
+flamethrower (0.1.8-5) UNRELEASED; urgency=medium
+
+  * Properly shutdown udp-sender processes. Thanks Frédéric Tronel.
+    (Closes: #802698).
+
+ -- dann frazier <dannf@debian.org>  Thu, 17 Sep 2020 18:09:01 -0600
+
 flamethrower (0.1.8-4) unstable; urgency=medium
 
   * Acknowledge NMU (Closes: #792382).
