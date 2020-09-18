@@ -1,0 +1,70 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+PREFIX = $(tmp)/usr
+pkg = flamethrower
+tmp = $(PWD)/debian/$(pkg)
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	perl Makefile.PL
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	rm -f build-stamp configure-stamp
+	-$(MAKE) realclean
+	-rm debian/flamethrower.init
+	dh_clean
+
+install: build
+	dh_testdir
+	-dh_testroot
+	dh_installdirs
+	$(MAKE) install PREFIX="$(PREFIX)" CONFDIR="$(tmp)"
+
+	# this directory tree is empty
+	rm -rf $(tmp)/usr/lib/perl
+
+	# let debhelper install this for us
+	rm -rf $(tmp)/etc/init.d
+	cp etc/init.d/flamethrower-server debian/$(pkg).init
+
+	mkdir -p $(tmp)/var/state/flamethrower
+	mkdir -p $(tmp)/var/lib/flamethrower
+	mkdir -p $(tmp)/var/log/flamethrower
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdebconf	
+	dh_perl
+	dh_installdocs
+	dh_installchangelogs #CHANGELOG
+	dh_installinit
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

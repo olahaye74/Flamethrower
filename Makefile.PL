@@ -15,6 +15,7 @@ set_ver::
 
 install_configs::
 \tinstall -d \$(CONFDIR)/etc/init.d
+\tinstall -d \$(CONFDIR)/etc/flamethrower
 \tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower
 \tinstall -m 755 etc/init.d/flamethrower-server \$(CONFDIR)/etc/init.d
 

@@ -343,7 +343,7 @@ sub update_directory {
     # Create our directory directory, if necessary.
     my $dir = $ft_config->get("flamethrower_directory_dir");
     if ( ! -e $dir ) {
-        mkdir("$dir", 0755) or die("Couddn't mkdir $dir!");
+        mkdir("$dir", 0755) or die("Couldn't mkdir $dir!");
     }
     unlink <$dir/*>;
 

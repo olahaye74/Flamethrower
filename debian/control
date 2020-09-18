@@ -1,0 +1,27 @@
+Source: flamethrower
+Section: admin
+Priority: optional
+Maintainer: dann frazier <dannf@debian.org>
+Build-Depends-Indep: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: flamethrower
+Architecture: all
+Depends: ${perl:Depends}, udpcast, libappconfig-perl
+Description: Multicast file distribution utility
+ Flamethrower is intended to be an easy to use multicast file distribution
+ system.  It was created to add multicast install capabilities to
+ SystemImager, but was designed to be fully functional as a stand-alone
+ package.
+ .
+ Notable characteristics:
+  1)  Works with entire directory heirarchies of files, not just single files.
+  2)  Uses a server configuration file that takes module entries that are
+      similar to those used by rsyncd.conf.
+  3)  Flamethrower is an on-demand system.  The multicast of a module is
+      initiated when a client connects, but waits MIN_WAIT (conf file) for
+      other clients to connect.  If other clients try to connect after a
+      cast has been initiated, they simply wait until that cast has finished,
+      and catch the next one when it begins.
+  4)  The udpcast package is used as the multicast transport, and offers a
+      gob and a half of tuning parameters.
