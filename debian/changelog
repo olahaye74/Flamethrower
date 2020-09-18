@@ -1,3 +1,20 @@
+flamethrower (0.1.8-2) unstable; urgency=low
+
+  * Fix /tmp symlink attack vector. Closes: #506350 (CVE-2008-5141)
+  * Rebuilding with current toolchain would cause executables to
+    be installed in /usr/local/bin. Fix this by supplying an
+    appropriate SITEPREFIX.
+  * Don't package /usr/lib/flamethrower/auto subtree
+  * Lintian cleanup:
+    - Remove bogus (empty) line in lsb section of initscript
+    - Use $(CURDIR) instead of $(PWD) in rules file, suggested by lintian
+    - Don't ignore clean errors from make
+    - Update Standards-Version to 3.8.0
+    - Swap binary-arch/binary-indep rules
+    - List debhelper under Build-Depends instead of Build-Depends-Indep
+
+ -- dann frazier <dannf@debian.org>  Fri, 21 Nov 2008 10:46:08 -0700
+
 flamethrower (0.1.8-1) unstable; urgency=low
 
   * New upstream release

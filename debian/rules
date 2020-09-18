@@ -5,7 +5,7 @@
 
 PREFIX = $(tmp)/usr
 pkg = flamethrower
-tmp = $(PWD)/debian/$(pkg)
+tmp = $(CURDIR)/debian/$(pkg)
 
 configure: configure-stamp
 configure-stamp:
@@ -22,7 +22,7 @@ build-stamp:
 clean:
 	dh_testdir
 	rm -f build-stamp configure-stamp
-	-$(MAKE) realclean
+	[ ! -f Makefile ] || $(MAKE) realclean
 	-rm debian/flamethrower.init
 	dh_clean
 
@@ -30,10 +30,14 @@ install: build
 	dh_testdir
 	-dh_testroot
 	dh_installdirs
-	$(MAKE) install PREFIX="$(PREFIX)" CONFDIR="$(tmp)"
+	$(MAKE) install PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)"
+
+	# upstream installs this as executable
+	chmod 644 $(tmp)/usr/lib/flamethrower/*.pm
 
 	# this directory tree is empty
 	rm -rf $(tmp)/usr/lib/perl
+	rm -rf $(tmp)/usr/lib/flamethrower/auto
 
 	# let debhelper install this for us
 	rm -rf $(tmp)/etc/init.d
@@ -44,11 +48,11 @@ install: build
 	mkdir -p $(tmp)/var/log/flamethrower
 
 # Build architecture-independent files here.
-binary-indep: build install
+binary-arch: build install
 # We have nothing to do by default.
 
 # Build architecture-dependent files here.
-binary-arch: build install
+binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installdebconf	
