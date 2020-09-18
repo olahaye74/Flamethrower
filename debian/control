@@ -3,7 +3,7 @@ Section: admin
 Priority: optional
 Maintainer: dann frazier <dannf@debian.org>
 Build-Depends-Indep: debhelper (>> 3.0.0)
-Standards-Version: 3.5.2
+Standards-Version: 3.6.2.2
 
 Package: flamethrower
 Architecture: all
@@ -15,7 +15,7 @@ Description: Multicast file distribution utility
  package.
  .
  Notable characteristics:
-  1)  Works with entire directory heirarchies of files, not just single files.
+  1)  Works with entire directory hierarchies of files, not just single files.
   2)  Uses a server configuration file that takes module entries that are
       similar to those used by rsyncd.conf.
   3)  Flamethrower is an on-demand system.  The multicast of a module is

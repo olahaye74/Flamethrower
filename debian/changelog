@@ -1,3 +1,11 @@
+flamethrower (0.1.8-1) unstable; urgency=low
+
+  * New upstream release
+  * Fix typo in description.  Closes: #363414
+  * Update Standard-Version to 3.6.2.2
+
+ -- dann frazier <dannf@debian.org>  Tue, 18 Apr 2006 17:11:22 -0600
+
 flamethrower (0.1.6-2) unstable; urgency=low
 
   * add dependency on libappconfig-perl.  Closes: #233212

@@ -14,10 +14,12 @@ set_ver::
 \t${install} \$(PREFIX)/lib/flamethrower/Flamethrower.pm
 
 install_configs::
-\tinstall -d \$(CONFDIR)/etc/init.d
-\tinstall -d \$(CONFDIR)/etc/flamethrower
-\tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower
-\tinstall -m 755 etc/init.d/flamethrower-server \$(CONFDIR)/etc/init.d
+\tinstall -d \$(CONFDIR)/etc/init.d/
+\tinstall -d \$(CONFDIR)/etc/flamethrower/
+\tinstall -d \$(CONFDIR)/var/lib/flamethrower/
+\tinstall -d \$(CONFDIR)/var/state/flamethrower/
+\tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower/
+\tinstall -m 755 etc/init.d/flamethrower-server \$(CONFDIR)/etc/init.d/
 
 source_tarball :: tmp/flamethrower-$version.tar.bz2
 
