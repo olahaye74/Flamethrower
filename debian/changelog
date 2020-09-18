@@ -1,3 +1,12 @@
+flamethrower (0.1.8-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix "FTBFS with perl 5.22 in experimental (MakeMaker changes)":
+    adjust variables in debian/rules and Makefile.PL.
+    (Closes: #792382)
+
+ -- gregor herrmann <gregoa@debian.org>  Wed, 26 Aug 2015 15:57:13 +0200
+
 flamethrower (0.1.8-3) unstable; urgency=low
 
   * Fix runlevels in LSB section of initscript and add dependency

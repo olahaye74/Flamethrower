@@ -3,7 +3,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-PREFIX = $(tmp)/usr
+PREFIX = /usr
 pkg = flamethrower
 tmp = $(CURDIR)/debian/$(pkg)
 
@@ -30,7 +30,7 @@ install: build
 	dh_testdir
 	-dh_testroot
 	dh_installdirs
-	$(MAKE) install PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)" INSTALLSITEARCH="$(PREFIX)"
+	$(MAKE) install DESTDIR="$(tmp)" PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)" INSTALLSITEARCH="$(PREFIX)" INSTALLSITESCRIPT="$(PREFIX)/bin"
 
 	# upstream installs this as executable
 	chmod 644 $(tmp)/usr/lib/flamethrower/*.pm
