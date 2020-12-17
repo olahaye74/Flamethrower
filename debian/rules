@@ -30,7 +30,3 @@ override_dh_auto_install:
 	# let debhelper install this for us
 	rm -rf $(tmp)/etc/init.d
 	cp etc/init.d/flamethrower-server debian/$(pkg).init
-
-	mkdir -p $(tmp)/var/state/flamethrower
-	mkdir -p $(tmp)/var/lib/flamethrower
-	mkdir -p $(tmp)/var/log/flamethrower

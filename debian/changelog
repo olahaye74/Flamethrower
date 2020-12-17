@@ -4,6 +4,7 @@ flamethrower (0.1.8-5) UNRELEASED; urgency=medium
     (Closes: #802698).
   * Update debhelper compat level to 13.
   * Use debian/clean for static list of files to clean.
+  * Use debian/dirs to create directories instead of manual mkdirs.
 
  -- dann frazier <dannf@debian.org>  Thu, 17 Sep 2020 18:09:01 -0600
 
