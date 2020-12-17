@@ -7,29 +7,18 @@ PREFIX = /usr
 pkg = flamethrower
 tmp = $(CURDIR)/debian/$(pkg)
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
+%:
+	dh $@
+
+override_dh_auto_configure:
 	perl Makefile.PL
-	touch configure-stamp
 
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
-	$(MAKE)
-	touch build-stamp
-
-clean:
-	dh_testdir
-	rm -f build-stamp configure-stamp
+override_dh_auto_clean:
 	[ ! -f Makefile ] || $(MAKE) realclean
 	-rm debian/flamethrower.init
-	dh_clean
+	dh_auto_clean
 
-install: build
-	dh_testdir
-	-dh_testroot
-	dh_installdirs
+override_dh_auto_install:
 	$(MAKE) install DESTDIR="$(tmp)" PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)" INSTALLSITEARCH="$(PREFIX)" INSTALLSITESCRIPT="$(PREFIX)/bin"
 
 	# upstream installs this as executable
@@ -46,29 +35,3 @@ install: build
 	mkdir -p $(tmp)/var/state/flamethrower
 	mkdir -p $(tmp)/var/lib/flamethrower
 	mkdir -p $(tmp)/var/log/flamethrower
-
-# Build architecture-independent files here.
-binary-arch: build install
-# We have nothing to do by default.
-
-# Build architecture-dependent files here.
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-	dh_installdebconf	
-	dh_perl
-	dh_installdocs
-	dh_installchangelogs #CHANGELOG
-	dh_installinit
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure

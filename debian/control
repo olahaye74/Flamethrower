@@ -2,7 +2,7 @@ Source: flamethrower
 Section: admin
 Priority: optional
 Maintainer: dann frazier <dannf@debian.org>
-Build-Depends: debhelper (>> 5)
+Build-Depends: debhelper-compat (= 13)
 Standards-Version: 3.9.6
 
 Package: flamethrower
