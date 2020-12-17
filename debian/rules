@@ -14,7 +14,8 @@ override_dh_auto_configure:
 	perl Makefile.PL
 
 override_dh_auto_clean:
-	[ ! -f Makefile ] || $(MAKE) realclean
+	perl Makefile.PL
+	$(MAKE) realclean
 	dh_auto_clean
 
 override_dh_auto_install:
