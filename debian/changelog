@@ -6,6 +6,8 @@ flamethrower (0.1.8-5) UNRELEASED; urgency=medium
   * Use debian/clean for static list of files to clean.
   * Use debian/dirs to create directories instead of manual mkdirs.
   * Add a systemd service file.
+  * Add a Pre-Depends to ensure we have a new enough invoke-rc.d to
+    support the --skip-systemd-native flag.
 
  -- dann frazier <dannf@debian.org>  Thu, 17 Sep 2020 18:09:01 -0600
 

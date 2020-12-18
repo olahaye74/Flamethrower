@@ -8,6 +8,7 @@ Standards-Version: 3.9.6
 Package: flamethrower
 Architecture: all
 Depends: libappconfig-perl, udpcast, ${misc:Depends}, ${perl:Depends}
+Pre-Depends: ${misc:Pre-Depends}
 Description: Multicast file distribution utility
  Flamethrower is intended to be an easy to use multicast file distribution
  system.  It was created to add multicast install capabilities to
