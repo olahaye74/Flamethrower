@@ -3,7 +3,7 @@ Section: admin
 Priority: optional
 Maintainer: dann frazier <dannf@debian.org>
 Build-Depends: debhelper-compat (= 13)
-Standards-Version: 3.9.6
+Standards-Version: 4.5.1
 
 Package: flamethrower
 Architecture: all
