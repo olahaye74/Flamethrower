@@ -1,4 +1,4 @@
-flamethrower (0.1.8-5) UNRELEASED; urgency=medium
+flamethrower (0.1.8-5) unstable; urgency=medium
 
   * Properly shutdown udp-sender processes. Thanks Frédéric Tronel.
     (Closes: #802698).
@@ -11,7 +11,7 @@ flamethrower (0.1.8-5) UNRELEASED; urgency=medium
   * Bump Standards-Version to 4.5.1 with no changes.
   * Remove /var/state/flamethrower on purge.
 
- -- dann frazier <dannf@debian.org>  Thu, 17 Sep 2020 18:09:01 -0600
+ -- dann frazier <dannf@debian.org>  Thu, 17 Dec 2020 17:50:51 -0700
 
 flamethrower (0.1.8-4) unstable; urgency=medium
 
