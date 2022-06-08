@@ -1,0 +1,325 @@
+#!/usr/bin/perl -w
+#
+#   "Flamethrower"
+#
+#   Copyright (C) 2003 Brian Elliott Finley <finley@mcs.anl.gov>
+#
+#   $Id: flamethrower 46 2003-11-18 00:29:22Z brianfinley $
+#
+
+use strict;
+use File::Path;
+use Getopt::Long;
+
+use lib "/usr/lib/flamethrower";
+use Flamethrower;
+
+use vars qw($config $ft_config $VERSION);
+
+#
+# Set some defaults
+#
+my $program_name    = "flamethrower";
+my $version_number  = "INS_VERSION";
+my $conf_file       = '/etc/flamethrower/flamethrower.conf';
+my $transport       = "udp-receiver";
+my $tmp_dir         = "/tmp/.flamethrower.$$";
+
+
+my $version_info = <<"EOF";
+$program_name (part of Flamethrower) version $version_number
+
+Copyright (C) 2003 Brian Elliott Finley <finley\@mcs.anl.gov>
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+EOF
+
+# set help information
+my $help_info = $version_info . <<"EOF";
+
+Usage: $program_name [OPTION]... --module MODULE --directory DIRECTORY
+   or: $program_name [OPTION]... --list
+
+Options: (options can be presented in any order)
+
+ --help
+    Display this output.
+
+ --version
+    Display version and copyright information.
+
+ --verbose
+    Be verbose.
+
+ --config-file FILE
+    Alternate config file location.  Defaults to:
+    $conf_file
+
+    Note: SystemImager users try using:
+    /etc/systemimager/flamethrower.conf
+
+ --list
+    List available modules on the Flamethrower server.
+
+ --module MODULE
+    Join a multicast to recieve an identical copy of MODULE in the directory
+    specified by --directory.
+
+ --directory DIRECTORY
+    Local directory in which to place your copy of MODULE.
+
+ --ttl TTL
+ 
+ --async
+
+ --nosync
+
+ --mcast-all-addr ADDRESS
+
+ --portbase PORTBASE
+    PORTBASE for the Flamethrower directory.
+
+Download, report bugs, and make suggestions at:
+http://systemimager.org/support/
+EOF
+
+
+# interpret command line options
+GetOptions( 
+    "help"             => \my $help,
+    "version"          => \my $version,
+    "verbose"          => \my $verbose,
+    "config-file=s"    => \$conf_file,
+    "list"             => \my $list,
+    "module=s"         => \my $module,
+    "directory=s"      => \my $directory,
+    "ttl=s"            => \my $ttl,
+    "async"            => \my $async,
+    "nosync"           => \my $nosync,
+    "mcast-all-addr=s" => \my $mcast_all_addr,
+    "portbase=s"       => \my $flamethrower_directory_portbase,
+) or die qq($help_info);
+
+
+################################################################################ 
+#
+# process options
+#
+# if requested, print help information
+if($help) {
+    print qq($help_info);
+    exit 0;
+}
+
+
+# if requested, print version and copyright information
+if($version) {
+    print qq($version_info);
+    exit 0;
+}
+
+
+# Read the config file and update the directory
+Flamethrower->read_config($conf_file) or die("Couldn't read $conf_file!");
+
+# Warn if specified interface doesn't exist.
+my $interface = $ft_config->interface();
+if (( ! -d "/proc/sys/net/ipv4/conf/$interface" ) and ( ! -d "/proc/sys/net/ipv6/conf/$interface" )) {
+    print STDERR "\n\n";
+    print STDERR "FATAL:  Interface $interface, as specified in your flamethrowerd.conf file,\n";
+    print STDERR "        does not appear to be configured on this machine.\n";
+    print STDERR "\n";
+    exit 1;
+}
+
+
+unless( Flamethrower->which( "$transport", $ENV{PATH} ) ) {
+    print "I can't find $transport in your path:\n";
+    print "  $ENV{PATH}\n";
+    print "Please be sure that you have the udpcast package installed.\n";
+    exit 1;
+}
+
+#
+# Take settings from conf file if not specified on the command line.
+#
+unless($ttl)                { $ttl            = $ft_config->get('ttl');            }
+unless($nosync)             { $nosync         = $ft_config->get('nosync');         }
+unless($async)              { $async          = $ft_config->get('async');          }
+unless($mcast_all_addr)     { $mcast_all_addr = $ft_config->get('mcast_all_addr'); }
+unless($flamethrower_directory_portbase) { $flamethrower_directory_portbase = $ft_config->get('flamethrower_directory_portbase'); }
+
+if($list) {
+
+    my $portbase = $flamethrower_directory_portbase;
+    my $dir = $tmp_dir;
+
+    print "Available modules:\n";   # show this first, so the user knows something is happening
+    flamethrower_client('flamethrower_directory', $dir, $portbase, $interface, $mcast_all_addr, $async, $nosync, $ttl);
+
+    opendir(DIR, "$dir") or die("Couldn't open dir $dir!");
+        while( defined($_ = readdir(DIR)) ) {
+            print "  $_\n" unless((m/^\.{1,2}$/o) or (m/^flamethrower_directory$/o));
+        }
+    closedir(DIR);
+    print "\n";
+
+    rmtree($dir) or print "WARNING: Couldn't remove temporary directory: $dir!\n";
+
+} elsif(($module) and ($directory)) {
+
+    #
+    # Get directory info
+    #
+    my $portbase = $flamethrower_directory_portbase;
+    my $dir = $tmp_dir;
+    flamethrower_client('flamethrower_directory', $dir, $portbase, $interface, $mcast_all_addr, $async, $nosync, $ttl);
+
+    #
+    # read module info
+    #
+    my $file = "$dir/$module";
+    open(FILE, "<$file") or die("Couldn't open $file for reading!");
+        while(<FILE>) {
+
+            chomp;
+            next if(m/^MODULE=/o);
+            my ($variable, $value) = split(/=/);
+
+            $portbase       = $value if($variable eq 'PORTBASE');
+            $async          = $value if($variable eq 'ASYNC');
+            $ttl            = $value if($variable eq 'TTL');
+            $mcast_all_addr = $value if($variable eq 'MCAST_ALL_ADDR');
+
+            # don't get log info from server -- let client decide
+            # don't get interface from server -- let client decide
+            # don't get nosync from server -- let client decide
+            # don't get norespect from server -- just don't
+
+        }
+    close(FILE);
+
+    rmtree($dir) or print "WARNING: Couldn't remove temporary directory: $dir!\n";
+
+    $dir = $directory;
+    flamethrower_client($module, $dir, $portbase, $interface, $mcast_all_addr, $async, $nosync, $ttl);
+
+
+} else {
+    
+    print qq($help_info);
+    exit 1;
+
+}
+
+exit 0;
+
+
+
+#########################################################################################
+#
+#   Subroutines
+#
+
+#
+# Usage: 
+#
+#   flamethrower_client($module, $dir, $portbase, $interface[, $mcast_all_addr, $async, $nosync, $ttl]);
+#
+sub flamethrower_client {
+
+    my $module          = shift;
+    my $dir             = shift;
+    my $portbase        = shift;
+    my $interface       = shift;
+    my $mcast_all_addr  = shift;
+    my $async           = shift;
+    my $nosync          = shift;
+    my $ttl             = shift;
+
+    unless(-e $dir) {
+        eval { mkpath("$dir", 0, 0700) };
+        if ($@) {
+            die("Couldn't create temporary directory: $dir: $@");
+        }
+    }
+
+    ############################################################################ 
+    #
+    # build command
+    #
+    my $udp_receiver_options     = "--interface $interface";
+
+    $udp_receiver_options       .= " --portbase $portbase";
+
+    if($ttl) {
+        $udp_receiver_options   .= " --ttl $ttl";
+    }
+    if( "$nosync" eq "on" ) {
+        $udp_receiver_options   .= " --nosync";
+    }
+    if( "$async" eq "on" ) {
+        $udp_receiver_options   .= " --async";
+    }
+    if( $mcast_all_addr ) {
+        $udp_receiver_options   .= " --mcast-all-addr $mcast_all_addr";
+    }
+
+    #
+    # Which tar opts should we use?  If our tar has --overwrite capability, use it.
+    #   Summary: busybox tar doesn't.  Debian patched gnu tar does.  We want
+    #   this option enabled to ensure proper directory permissions. -BEF-
+    #
+    my $tar_opts;
+    if(`tar --help 2>&1 | grep overwrite`) {
+        $tar_opts = '--overwrite -xp';
+    } else {
+        $tar_opts = '-x';
+    }
+
+    ############################################################################
+    #
+    # initiate transfer
+    #
+    my $udp_cmd;
+    my $tar_cmd;
+
+    if($verbose) {
+        $udp_cmd = "udp-receiver $udp_receiver_options --file /tmp/multicast.tar.$$";
+        $tar_cmd = "tar $tar_opts -C $dir -f /tmp/multicast.tar.$$";
+    } else {
+        $udp_cmd = "udp-receiver $udp_receiver_options --file /tmp/multicast.tar.$$ 2>/dev/null";
+        $tar_cmd = "tar $tar_opts -C $dir -f /tmp/multicast.tar.$$";
+    }
+
+    print "$udp_cmd\n" if($verbose);
+    !system($udp_cmd) or die("FAILED: $tar_cmd");
+
+    print "$tar_cmd\n" if($verbose);
+    !system($tar_cmd) or die("FAILED: $tar_cmd");
+
+    unlink("/tmp/multicast.tar.$$");
+}
+
+
+#
+# which
+#
+# Usage:
+#   which($file,$ENV{PATH}) || do stuff;
+#
+sub which {
+
+    my $file = shift;
+    my $path = shift;
+    
+    foreach my $dir (split(/:/,$path)) {
+        if(-x "$dir/$file") {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+

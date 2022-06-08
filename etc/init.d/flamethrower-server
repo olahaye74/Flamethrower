@@ -1,0 +1,81 @@
+#!/bin/sh
+#
+# "Flamethrower"
+#
+#  Copyright (C) 2003 Bald Guy Software 
+#                     Brian E. Finley <bef@bgsw.net>
+#
+#    $Id: flamethrower-server 14 2003-05-27 20:09:00Z brianfinley $
+#
+#
+# Support for IRIX style chkconfig:
+# chkconfig:   2345 20 20
+# description: The Flamethrower multicast daemon.
+#
+#
+# Support for LSB compliant init system:
+### BEGIN INIT INFO
+# Provides: flamethrowerd
+# Required-Start: $network $syslog
+# Required-Stop:
+# Default-Start:  3 5
+# Default-Stop:   0 1 2 6
+# Short-Description: Daemon for multicast file distribution
+# Description: Daemon for multicast file distribution
+#
+### END INIT INFO
+
+kill_em_all() {
+    if [ -f $PPID_FILE ]; then
+        kill `cat $PPID_FILE`
+        rm -f $PPID_FILE
+    fi
+    if [ "`ls $STATE_DIR`" != "" ]; then
+        for PID_FILE in `ls ${STATE_DIR}/*`
+        do
+            if [ -f $PID_FILE ]; then
+                kill -9 `cat $PID_FILE`
+                rm -f $PID_FILE
+                echo -n "."
+            fi
+        done
+        kill_em_all
+    fi
+}
+
+PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin:
+PPID_FILE=/var/run/flamethrower-server.pid
+
+# STATE_DIR must match the setting in the flamethrower.conf file.
+STATE_DIR=/var/run/flamethrower
+mkdir -p ${STATE_DIR}
+
+case "$1" in
+  start)
+    if [ -e $PPID_FILE ]; then
+        echo "PID file $PPID_FILE exists.  Must be already running."
+        exit 1
+    fi
+    echo -n "Starting Flamethrower daemon: flamethrowerd"
+    flamethrowerd --config-file /etc/flamethrower/flamethrower.conf --pid-file $PPID_FILE
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping Flamethrower daemon: flamethrowerd"
+    kill_em_all
+    echo
+    ;;
+  reload)
+    echo "Not implemented."
+    ;;
+  force-reload|restart)
+    sh $0 stop
+    sh $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0
