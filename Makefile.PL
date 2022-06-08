@@ -9,9 +9,10 @@ sub MY::postamble {
     my $string = <<EOF;
 
 set_ver::
-\t${install} \$(PREFIX)/bin/flamethrower
-\t${install} \$(PREFIX)/bin/flamethrowerd
-\t${install} \$(PREFIX)/lib/flamethrower/Flamethrower.pm
+\tfind \$(DESTDIR)
+\t${install} \$(DESTINSTALLSITEBIN)/flamethrower
+\t${install} \$(DESTINSTALLSITEBIN)/flamethrowerd
+\t${install} \$(DESTINSTALLSITELIB)/Flamethrower.pm
 
 install_configs::
 \tinstall -d \$(CONFDIR)/etc/init.d/
@@ -41,8 +42,11 @@ WriteMakefile(
               'NAME' => 'Flamethrower',
               'EXE_FILES' => [qw(bin/flamethrowerd bin/flamethrower)],
               'dist' => {
-                         'CI' => 'cvs ci',
-                         'RCS_LABEL' => 'cvs up',
+                          'COMPRESS'  => 'bzip2 -f',
+                          'SUFFIX'    => 'bz2'
                         },
-	      'INSTALLSITELIB' => '$(PREFIX)/lib/flamethrower',
+              'PREREQ_PM' => {
+                              AppConfig => '1.52',
+                        },
+              'realclean'   => {FILES => "*.old *.bak *.tar.bz2 *.tar *.tar.gz Makefile"},
              );
