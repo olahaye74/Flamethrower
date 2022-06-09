@@ -39,7 +39,7 @@ EOF
 
 WriteMakefile(
               'VERSION' => $version,
-              'NAME' => 'Flamethrower',
+              'NAME' => 'flamethrower',
               'EXE_FILES' => [qw(bin/flamethrowerd bin/flamethrower)],
               'dist' => {
                           'COMPRESS'  => 'bzip2 -f',
@@ -48,5 +48,5 @@ WriteMakefile(
               'PREREQ_PM' => {
                               AppConfig => '1.52',
                         },
-              'realclean'   => {FILES => "*.old *.bak *.tar.bz2 *.tar *.tar.gz Makefile"},
+              'realclean'   => {FILES => "*.old *.bak *.tar.bz2 *.tar *.tar.gz Makefile MYMETA.*"},
              );
