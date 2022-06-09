@@ -7,7 +7,7 @@ Makefile.PL
 utils/install-N-sub
 utils/install-N-sub.conf
 README
-COPYING
+LICENSE
 CREDITS
 HOWTO
 VERSION
