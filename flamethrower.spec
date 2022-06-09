@@ -7,7 +7,7 @@ Name: %name
 Version: %version
 Release: %release
 License: GPL
-Summary: Flamethrower
+Summary: A multicast file transfer utility
 URL: http://systemimager.org
 Group: Applications/System
 Source: %{name}-%{version}.tar.bz2
@@ -20,7 +20,7 @@ Buildroot: /tmp/%{name}-%{version}-root
 #AutoReq: no
 
 %description
-Multicast file transfer utility.
+Flamethrower is a multicast file transfer utility.
 
 %prep
 %setup
