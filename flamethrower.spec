@@ -31,20 +31,20 @@ Multicast file transfer utility.
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
-%{__make} install                    CONFDIR=$RPM_BUILD_ROOT DESTDIR=$RPM_BUILD_ROOT
+%{__make} install               CONFDIR=$RPM_BUILD_ROOT DESTDIR=$RPM_BUILD_ROOT
 rm -rf                          $RPM_BUILD_ROOT%{prefix}/lib/flamethrower/auto/
 find                            $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | xargs rm -f
 find                            $RPM_BUILD_ROOT%{prefix} -name .packlist | xargs rm -f
 
 %files
 %defattr(-,root,root)
-%{prefix}/bin/flamethrower
-%{prefix}/bin/flamethrowerd
-%{prefix}/lib/flamethrower/*
-%doc HOWTO README COPYING CREDITS
-%config /etc/flamethrower/flamethrower.conf
-%config /etc/init.d/flamethrower-server
-%dir /var/lib/flamethrower
+%doc HOWTO README LICENSE CREDITS
+%{_bindir}/flamethrower
+%{_bindir}/flamethrowerd
+%{perl_vendorlib}/Flamethrower.pm
+%config %{_sysconfdir}/flamethrower/flamethrower.conf
+%config %{_sysconfdir}/init.d/flamethrower-server
+%dir %{_sharedstatedir}/flamethrower
 
 %post
 
