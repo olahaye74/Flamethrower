@@ -17,7 +17,7 @@ Vendor: http://sisuite.org
 Packager: SIS Devel Team <sisuite-devel@lists.sf.net>
 Prefix: %prefix
 Buildroot: /tmp/%{name}-%{version}-root
-AutoReqProv: no
+#AutoReq: no
 
 %description
 Multicast file transfer utility.
