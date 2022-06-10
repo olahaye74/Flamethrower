@@ -8,18 +8,33 @@ chomp $version;
 sub MY::postamble {
     my $string = <<EOF;
 
+ifneq ($(wildcard /usr/lib/systemd/system/systemd-halt.service),)
+SYSTEMD_OS_UNIT_DIR = /usr/lib/systemd/system
+else ifneq ($(wildcard /lib/systemd/system/systemd-halt.service),)
+SYSTEMD_OS_UNIT_DIR = /lib/systemd/system
+else
+SYSTEMD_OS_UNIT_DIR = ""
+endif
+
 set_ver::
-\t${install} \$(PREFIX)/bin/flamethrower
-\t${install} \$(PREFIX)/bin/flamethrowerd
-\t${install} \$(PREFIX)/lib/flamethrower/Flamethrower.pm
+\t${install} \$(DESTINSTALLSITEBIN)/flamethrower
+\t${install} \$(DESTINSTALLSITEBIN)/flamethrowerd
+\t${install} \$(DESTINSTALLSITELIB)/Flamethrower.pm
+\tchmod 644  \$(DESTINSTALLSITELIB)/Flamethrower.pm
+
 
 install_configs::
+ifneq ("\$(SYSTEMD_OS_UNIT_DIR)","")
+\tinstall -d \$(DESTDIR)\$(SYSTEMD_OS_UNIT_DIR)
+\tinstall -m644 etc/systemd/flamethrower.service \$(DESTDIR)\$(SYSTEMD_OS_UNIT_DIR)
+else
 \tinstall -d \$(CONFDIR)/etc/init.d/
+\tinstall -m 755 etc/init.d/flamethrower-server \$(CONFDIR)/etc/init.d/
+endif
 \tinstall -d \$(CONFDIR)/etc/flamethrower/
 \tinstall -d \$(CONFDIR)/var/lib/flamethrower/
 \tinstall -d \$(CONFDIR)/var/state/flamethrower/
 \tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower/
-\tinstall -m 755 etc/init.d/flamethrower-server \$(CONFDIR)/etc/init.d/
 
 source_tarball :: tmp/flamethrower-$version.tar.bz2
 
@@ -39,11 +54,16 @@ EOF
 
 WriteMakefile(
               'VERSION' => $version,
-              'NAME' => 'Flamethrower',
+              'NAME' => 'flamethrower',
               'EXE_FILES' => [qw(bin/flamethrowerd bin/flamethrower)],
               'dist' => {
-                         'CI' => 'cvs ci',
-                         'RCS_LABEL' => 'cvs up',
+                          'COMPRESS'  => 'bzip2 -f',
+                          'SUFFIX'    => 'bz2'
                         },
-	      'INSTALLSITELIB' => '$(PREFIX)/lib/flamethrower',
+              'PREREQ_PM' => {
+                              AppConfig => '1.52',
+                        },
+              'realclean'   => {FILES => "*.old *.bak *.tar.bz2 *.tar *.tar.gz Makefile MYMETA.*"},
+              # We want to keep flamethrower API private.
+              'INSTALLSITELIB' => '$(PREFIX)/lib/flamethrower',
              );
