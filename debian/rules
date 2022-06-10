@@ -11,7 +11,7 @@ tmp = $(CURDIR)/debian/$(pkg)
 	dh $@
 
 override_dh_auto_configure:
-	perl Makefile.PL
+	perl Makefile.PL 
 
 override_dh_auto_clean:
 	perl Makefile.PL
@@ -21,13 +21,12 @@ override_dh_auto_clean:
 override_dh_auto_install:
 	$(MAKE) install DESTDIR="$(tmp)" PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)" INSTALLSITEARCH="$(PREFIX)" INSTALLSITESCRIPT="$(PREFIX)/bin"
 
-	# upstream installs this as executable
-	chmod 644 $(tmp)/usr/lib/flamethrower/*.pm
-
 	# this directory tree is empty
 	rm -rf $(tmp)/usr/perllocal.pod
 	rm -rf $(tmp)/usr/auto
 
 	# let debhelper install this for us
 	rm -rf $(tmp)/etc/init.d
+	rm -rf $(tmp)/lib/systemd
 	cp etc/init.d/flamethrower-server debian/$(pkg).init
+	cp etc/init.d/flamethrower.service debian/$(pkg).service
