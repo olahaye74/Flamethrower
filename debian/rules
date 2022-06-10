@@ -11,7 +11,7 @@ tmp = $(CURDIR)/debian/$(pkg)
 	dh $@
 
 override_dh_auto_configure:
-	perl Makefile.PL 
+	perl Makefile.PL PREFIX="$(PREFIX)"
 
 override_dh_auto_clean:
 	perl Makefile.PL
@@ -19,7 +19,7 @@ override_dh_auto_clean:
 	dh_auto_clean
 
 override_dh_auto_install:
-	$(MAKE) install DESTDIR="$(tmp)" PREFIX="$(PREFIX)" CONFDIR="$(tmp)" SITEPREFIX="$(PREFIX)" INSTALLSITEARCH="$(PREFIX)" INSTALLSITESCRIPT="$(PREFIX)/bin"
+	$(MAKE) install DESTDIR="$(tmp)" CONFDIR="$(tmp)"
 
 	# this directory tree is empty
 	rm -rf $(tmp)/usr/perllocal.pod
