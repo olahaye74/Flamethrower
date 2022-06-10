@@ -1,3 +1,10 @@
+flamethrower (0.1.8-6) unstable; urgency=medium
+
+  * flamethrowerd.conf: Default to lo instead of eth0 so that the
+    system does not fail to start if eth0 does not exist.
+
+ -- dann frazier <dannf@debian.org>  Wed, 23 Dec 2020 10:17:23 -0700
+
 flamethrower (0.1.8-5) unstable; urgency=medium
 
   * Properly shutdown udp-sender processes. Thanks Frédéric Tronel.
