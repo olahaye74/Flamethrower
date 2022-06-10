@@ -24,6 +24,8 @@
 # Description: Daemon for multicast file distribution
 ### END INIT INFO
 
+. /lib/lsb/init-functions
+
 kill_em_all() {
     if [ -f $PPID_FILE ]; then
         kill `cat $PPID_FILE`

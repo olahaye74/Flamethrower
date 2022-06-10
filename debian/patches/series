@@ -1,3 +1,2 @@
-source-init-functions.patch
 MakeMaker-DESTDIR.patch
 fix-stopping-udpcast.patch
