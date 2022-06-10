@@ -1,0 +1,26 @@
+bin/flamethrower
+bin/flamethrowerd
+lib/Flamethrower.pm
+etc/flamethrower.conf
+etc/init.d/flamethrower-server
+etc/systemd/flamethrower.service
+utils/install-N-sub
+utils/install-N-sub.conf
+Makefile.PL
+README
+CREDITS
+HOWTO
+LICENSE
+VERSION
+debian/changelog
+debian/clean
+debian/control
+debian/copyright
+debian/dirs
+debian/docs
+debian/postinst
+debian/postrm
+debian/rules
+debian/source/format
+flamethrower.spec
+MANIFEST			This list of files
