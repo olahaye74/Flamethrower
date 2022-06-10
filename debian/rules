@@ -21,12 +21,12 @@ override_dh_auto_clean:
 override_dh_auto_install:
 	$(MAKE) install DESTDIR="$(tmp)" CONFDIR="$(tmp)"
 
-	# this directory tree is empty
-	rm -rf $(tmp)/usr/perllocal.pod
-	rm -rf $(tmp)/usr/auto
+	# Cleanup useless stuffs
+	rm -rf $(tmp)/usr/lib/flamethrower/perllocal.pod
+	rm -rf $(tmp)/usr/lib/flamethrower/auto
 
 	# let debhelper install this for us
 	rm -rf $(tmp)/etc/init.d
 	rm -rf $(tmp)/lib/systemd
 	cp etc/init.d/flamethrower-server debian/$(pkg).init
-	cp etc/init.d/flamethrower.service debian/$(pkg).service
+	cp etc/systemd/flamethrower.service debian/$(pkg).service

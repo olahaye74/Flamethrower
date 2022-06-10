@@ -1,3 +1,15 @@
+flamethrower (0.1.9) unstable; urgency=medium
+
+  * New upstream release
+    - Enhanced systemd service file
+    - Enhanced Makefile.PL
+    - Debian patches merged
+  * Migrate state dir to /run (or /var/run on initscript based distros)
+  * dropped all patches as they have been applyed upstream
+  * Debian native package
+
+ -- olivier lahaye <olivier.lahaye@cea.fr>  Fri, 10 Jun 2022 18:18:07 +0200
+
 flamethrower (0.1.8-6) unstable; urgency=medium
 
   * flamethrowerd.conf: Default to lo instead of eth0 so that the

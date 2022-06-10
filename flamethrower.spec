@@ -1,5 +1,5 @@
 %define name            flamethrower
-%define version         0.1.8
+%define version         0.1.9
 %define release         1
 
 Summary: A multicast file distribution utility
@@ -129,6 +129,7 @@ fi
 - Added doc in file section
 - Added postun to clear temp data upon uninstall of package
 - Migrated /var/state/flamethrower to /run/flamethrower
+- 0.1.9 bugfix release
 * Mon Jan 16 2006 Bernard Li <bli@bcgsc.ca>
 - Added %dir /var/lib/flamethrower
 * Sat Dec 24 2005 Bernard Li <bli@bcgsc.ca>
