@@ -1,5 +1,5 @@
 %define name            flamethrower
-%define version         $(cat VERSION)
+%define version         0.1.8
 %define release         1
 
 Summary: A multicast file distribution utility
@@ -60,8 +60,8 @@ find $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | xargs %{__rm} -f
 %doc HOWTO README LICENSE CREDITS
 %{_bindir}/flamethrower
 %{_bindir}/flamethrowerd
-%dir %{prefix}/lib/flamethrower
-%{prefix}/lib/flamethrower/*.pm
+%dir %{_prefix}/lib/flamethrower
+%{_prefix}/lib/flamethrower/*.pm
 %doc HOWTO README CREDITS CREDITS
 %dir %{_sysconfdir}/flamethrower
 %config %{_sysconfdir}/flamethrower/flamethrower.conf
@@ -144,5 +144,5 @@ fi
 - simplify spec file
 * Thu Jul 03 2003 dann frazier <dannf@dannf.org>
 - fix 765028 - stop using %dir macros for system dirs
-* Sun Jul 01 2003 dann frazier <dannf@dannf.org>
+* Tue Jul 01 2003 dann frazier <dannf@dannf.org>
 - first package - based on systeminstaller's .spec file.
