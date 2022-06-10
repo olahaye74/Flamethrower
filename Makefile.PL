@@ -8,9 +8,9 @@ chomp $version;
 sub MY::postamble {
     my $string = <<EOF;
 
-ifneq ($(wildcard /usr/lib/systemd/system/systemd-halt.service),)
+ifneq (\$(wildcard /usr/lib/systemd/system/systemd-halt.service),)
 SYSTEMD_OS_UNIT_DIR = /usr/lib/systemd/system
-else ifneq ($(wildcard /lib/systemd/system/systemd-halt.service),)
+else ifneq (\$(wildcard /lib/systemd/system/systemd-halt.service),)
 SYSTEMD_OS_UNIT_DIR = /lib/systemd/system
 else
 SYSTEMD_OS_UNIT_DIR = ""
@@ -35,7 +35,7 @@ endif
 \tinstall -d \$(CONFDIR)/var/lib/flamethrower/
 \tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower/
 \t# Handle old distro (no /run, those using initscripts)
-\tsed -i -e 's|/run/flamethrower|/var/run/flamethrower|g' \$(CONFDIR)/etc/flamethrower.conf
+\tsed -i -e 's|/run/flamethrower|/var/run/flamethrower|g' \$(CONFDIR)/etc/flamethrower/flamethrower.conf
 
 source_tarball :: tmp/flamethrower-$version.tar.bz2
 
@@ -55,14 +55,27 @@ EOF
 
 WriteMakefile(
               'VERSION' => $version,
-              'NAME' => 'flamethrower',
+              'NAME' => 'Flamethrower',
+              'DISTNAME' => 'flamethrower',
+              'AUTHOR' => 'Brian Elliott Finley <brian@thefinleys.com',
+              'ABSTRACT' => 'A multicast file distribution utility',
               'EXE_FILES' => [qw(bin/flamethrowerd bin/flamethrower)],
+              'NO_META'  => '1',
+              # Don't use this yet as it only filter pm files.
+              # flamethrower and flamethrowerd needs to get version from pm file 1st
+              # Then we'll use this filter and drop utils.
+              #'PM_FILTER' => "sed -e s|INS_VERSION|$version|",
               'dist' => {
                           'COMPRESS'  => 'bzip2 -f',
                           'SUFFIX'    => 'bz2'
                         },
               'PREREQ_PM' => {
-                              AppConfig => '1.52',
+                                 'File::stat' => 0,
+                                 'File::Which' => 0,
+                                 'File::Path' => 0,
+                                 'File::Temp' => 0,
+                                 'Getopt::Long' => 0,
+                                 'AppConfig' => '1.52',
                         },
               'realclean'   => {FILES => "*.old *.bak *.tar.bz2 *.tar *.tar.gz Makefile MYMETA.*"},
               # We want to keep flamethrower API private.
