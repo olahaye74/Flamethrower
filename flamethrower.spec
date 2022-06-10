@@ -45,17 +45,19 @@ Notable characteristics:
 %setup
 
 %build
-perl Makefile.PL 
-make
+%{__perl} Makefile.PL PREFIX=%{_prefix}
+%{__make} %{?_smp_mflags}
 
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
-make install             PREFIX=$RPM_BUILD_ROOT%{prefix} PERLPREFIX=$RPM_BUILD_ROOT%{prefix} CONFDIR=$RPM_BUILD_ROOT
-rm -rf                          $RPM_BUILD_ROOT%{prefix}/lib/flamethrower/auto/
-find                            $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | xargs rm -f
+%{__make} install DESTDIR="$RPM_BUILD_ROOT" CONFDIR="$RPM_BUILD_ROOT"
+# Do some cleanup
+%{__rm} -rf $RPM_BUILD_ROOT%{prefix}/lib/flamethrower/auto/
+find $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | xargs %{__rm} -f
 
 %files
 %defattr(-,root,root)
+%doc HOWTO README LICENSE CREDITS
 %{_bindir}/flamethrower
 %{_bindir}/flamethrowerd
 %dir %{prefix}/lib/flamethrower
@@ -117,7 +119,7 @@ fi
 - Added support for systemd
 - Correctly handle service during upgrade
 - verstion is not hardcoded in sepc anymore
-
+- Added doc in file section
 * Mon Jan 16 2006 Bernard Li <bli@bcgsc.ca>
 - Added %dir /var/lib/flamethrower
 * Sat Dec 24 2005 Bernard Li <bli@bcgsc.ca>
