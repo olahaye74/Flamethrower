@@ -1,10 +1,27 @@
+#
+#   "flamethrower"
+#
+#   Copyright (C) 2018 Olivier Lahaye
+#
+#   $Id$
+#
+# Daemon for multicast file distribution
+#
+# Do not modify this file. Instead, use systemd override.
+# Set modified entries in /etc/systemd/system/flamethrower.service.d/<name>.conf
+
 [Unit]
 Description=Flamethrower Server
+ConditionPathExists=/etc/flamethrower/flamethrower.conf
 After=network-online.target
 
 [Service]
+Environment=STATE_DIR=/run/flamethrower
+# EnvironmentFile overrides default values
+EnvironmentFile=/etc/systemimager/flamethrower.conf
 Type=forking
-ExecStart=flamethrowerd --config-file /etc/flamethrower/flamethrower.conf
+PIDFile=/run/flamethrower/flamethrowerd.pid
+ExecStart=/usr/bin/flamethrowerd --config-file /etc/flamethrower/flamethrower.conf --pidfile $MAINPID
 
 [Install]
 WantedBy=multi-user.target

@@ -22,7 +22,12 @@ set -e
 case "$1" in
     purge)
 	rm -f /var/lib/flamethrower/flamethrower_directory
-	rm -rf /var/state/flamethrower
+	# Need to test existance for flamethrower directoey as /run is
+	# a virtual filesystem. /run/flamethrower won't exists if
+	# service was not started since last boot.
+	[test -d /run/flamethrower] && rm -rf /run/flamethrower
+	# If on an old distro, we need to check /var/run
+	[test -d /var/run/flamethrower] && rm -rf /var/run/flamethrower
 	;;
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 	;;

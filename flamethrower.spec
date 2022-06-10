@@ -71,7 +71,6 @@ find $RPM_BUILD_ROOT%{prefix} -name perllocal.pod | xargs %{__rm} -f
 %{_sysconfdir}/init.d/flamethrower-server
 %endif
 %dir %{_sharedstatedir}/flamethrower
-%dir /var/state/flamethrower
 
 %post
 # If systemd
@@ -114,12 +113,23 @@ fi
 # endif systemd/not systemd
 %endif
 
+%postun
+if [ $1 -eq 0 ]
+then
+        %__rm -f %{_sharedstatedir}/flamethrower/flamethrower_directory
+        [ test -d /run/flamethrower ] && %__rm -rf /run/flamethrower
+	# Drop line below when RHEL-6 support is dropped.
+        [ test -d /var/run/flamethrower ] && %__rm -rf /var/run/flamethrower
+fi
+
 %changelog
 * Fri Jun 10 2022 Olivier Lahaye <olivier.lahaye@cea.fr>
 - Added support for systemd
 - Correctly handle service during upgrade
 - verstion is not hardcoded in sepc anymore
 - Added doc in file section
+- Added postun to clear temp data upon uninstall of package
+- Migrated /var/state/flamethrower to /run/flamethrower
 * Mon Jan 16 2006 Bernard Li <bli@bcgsc.ca>
 - Added %dir /var/lib/flamethrower
 * Sat Dec 24 2005 Bernard Li <bli@bcgsc.ca>

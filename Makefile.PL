@@ -33,8 +33,9 @@ else
 endif
 \tinstall -d \$(CONFDIR)/etc/flamethrower/
 \tinstall -d \$(CONFDIR)/var/lib/flamethrower/
-\tinstall -d \$(CONFDIR)/var/state/flamethrower/
 \tinstall -m 644 etc/flamethrower.conf \$(CONFDIR)/etc/flamethrower/
+\t# Handle old distro (no /run, those using initscripts)
+\tsed -i -e 's|/run/flamethrower|/var/run/flamethrower|g' \$(CONFDIR)/etc/flamethrower.conf
 
 source_tarball :: tmp/flamethrower-$version.tar.bz2
 
