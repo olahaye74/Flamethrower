@@ -18,10 +18,13 @@ After=network-online.target
 [Service]
 Environment=STATE_DIR=/run/flamethrower
 # EnvironmentFile overrides default values
-EnvironmentFile=/etc/systemimager/flamethrower.conf
+EnvironmentFile=/etc/flamethrower/flamethrower.conf
 Type=forking
+RuntimeDirectory=flamethrower
+RuntimeDirectoryMode=0755
 PIDFile=/run/flamethrower/flamethrowerd.pid
 ExecStart=/usr/bin/flamethrowerd --config-file /etc/flamethrower/flamethrower.conf --pidfile $MAINPID
+ExecStopPost=/bin/rm -f /run/flamethrower/flamethrowerd.pid
 
 [Install]
 WantedBy=multi-user.target
