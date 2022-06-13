@@ -52,8 +52,7 @@ Notable characteristics:
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -fr $RPM_BUILD_ROOT
 %{__make} install DESTDIR="$RPM_BUILD_ROOT" CONFDIR="$RPM_BUILD_ROOT"
 # Do some cleanup
-%{__rm} -rf $RPM_BUILD_ROOT%{_prefix}/lib/flamethrower/auto/
-find $RPM_BUILD_ROOT%{_prefix} -name perllocal.pod | xargs %{__rm} -f
+find $RPM_BUILD_ROOT%{_prefix} -name perllocal.pod -o -name auto | xargs %{__rm} -rf
 
 %files
 %defattr(-,root,root)
